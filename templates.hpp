@@ -14,7 +14,6 @@ struct is_figurelike_tuple : std::false_type {};//+
 
 template<class Head, class... Tail>
 struct is_figurelike_tuple<std::tuple<Head, Tail...>> :	std::conjunction<is_vertex<Head>, std::is_same<Head, Tail>...>{};
-//is_same - åñëè ïàðà îäèíêîâàÿ - âîçâðàùàåòñÿ true,
 
 
 template<class T>
@@ -37,42 +36,55 @@ std::enable_if_t<has_method_square_v<T>, double> square(const T& object) {
 
 template< class T>
 
-/*if constexpr (Id >= std::tuple_size_v<T>) {
-		return;
-	}*/
-double compute_square(const T& tuple) {//?
-    if constexpr(std::tuple_size_v<T> == 4){
-        double Area = 0;
-        double a1 = (std::get<0>(tuple).x) * (std::get<1>(tuple).y) - (std::get<1>(tuple).x)*(std::get<0>(tuple).y);
-        double a2 = (std::get<1>(tuple).x) * (std::get<2>(tuple).y) - (std::get<2>(tuple).x)*(std::get<1>(tuple).y);
-        double a3 = (std::get<2>(tuple).x) * (std::get<3>(tuple).y) - (std::get<3>(tuple).x)*(std::get<2>(tuple).y);
-        double a4 = (std::get<3>(tuple).x) * (std::get<0>(tuple).y) - (std::get<0>(tuple).x)*(std::get<3>(tuple).y);
-        double res = 0.5 * (a1 + a2 + a3 + a4);
-        return res;
+double compute_square(const T& tuple) {
+    if constexpr(std::tuple_size_v<T> == 5){
+            double a1 = (std::get<0>(tuple).x) * (std::get<1>(tuple).y) - (std::get<1>(tuple).x)*(std::get<0>(tuple).y);
+            double a2 = (std::get<1>(tuple).x) * (std::get<2>(tuple).y) - (std::get<2>(tuple).x)*(std::get<1>(tuple).y);
+            double a3 = (std::get<2>(tuple).x) * (std::get<3>(tuple).y) - (std::get<3>(tuple).x)*(std::get<2>(tuple).y);
+            double a4 = (std::get<3>(tuple).x) * (std::get<4>(tuple).y) - (std::get<4>(tuple).x)*(std::get<3>(tuple).y);
+            double a5 = (std::get<4>(tuple).x) * (std::get<0>(tuple).y) - (std::get<0>(tuple).x)*(std::get<4>(tuple).y);
+            double res = 0.5 * (a1 + a2 + a3 + a4 + a5);
+        std::cout << "\n";
+            return abs(res);
     }
-    else if constexpr (std::tuple_size_v<T> == 5) {
+    else if constexpr (std::tuple_size_v<T> == 6) {
         double a1 = (std::get<0>(tuple).x) * (std::get<1>(tuple).y) - (std::get<1>(tuple).x)*(std::get<0>(tuple).y);
         double a2 = (std::get<1>(tuple).x) * (std::get<2>(tuple).y) - (std::get<2>(tuple).x)*(std::get<1>(tuple).y);
         double a3 = (std::get<2>(tuple).x) * (std::get<3>(tuple).y) - (std::get<3>(tuple).x)*(std::get<2>(tuple).y);
         double a4 = (std::get<3>(tuple).x) * (std::get<4>(tuple).y) - (std::get<4>(tuple).x)*(std::get<3>(tuple).y);
-        // double a5 = (std::get<4>(tuple).x) * (std::get<0>(tuple).y) - (std::get<0>(tuple).x)*(std::get<4>(tuple).y);
-        double res = 0.5 * (a1 + a2 + a3 + a4/*+ a5*/);
-        return res;
+        double a5 = (std::get<4>(tuple).x) * (std::get<5>(tuple).y) - (std::get<5>(tuple).x)*(std::get<4>(tuple).y);
+        double a6 = (std::get<5>(tuple).x) * (std::get<0>(tuple).y) - (std::get<0>(tuple).x)*(std::get<4>(tuple).y);
+        double res = 0.5 * (a1 + a2 + a3 + a4+ a5 + a6);
+        std::cout << "\n";
+        return abs(res);
+    }
+    else if constexpr (std::tuple_size_v<T> == 8){
+        double a1 = (std::get<0>(tuple).x) * (std::get<1>(tuple).y) - (std::get<1>(tuple).x)*(std::get<0>(tuple).y);
+        double a2 = (std::get<1>(tuple).x) * (std::get<2>(tuple).y) - (std::get<2>(tuple).x)*(std::get<1>(tuple).y);
+        double a3 = (std::get<2>(tuple).x) * (std::get<3>(tuple).y) - (std::get<3>(tuple).x)*(std::get<2>(tuple).y);
+        double a4 = (std::get<3>(tuple).x) * (std::get<4>(tuple).y) - (std::get<4>(tuple).x)*(std::get<3>(tuple).y);
+        double a5 = (std::get<4>(tuple).x) * (std::get<5>(tuple).y) - (std::get<5>(tuple).x)*(std::get<4>(tuple).y);
+        double a6 = (std::get<5>(tuple).x) * (std::get<6>(tuple).y) - (std::get<6>(tuple).x)*(std::get<5>(tuple).y);
+        double a7 = (std::get<6>(tuple).x) * (std::get<7>(tuple).y) - (std::get<7>(tuple).x)*(std::get<6>(tuple).y);
+        double a8 = (std::get<7>(tuple).x) * (std::get<0>(tuple).y) - (std::get<0>(tuple).x)*(std::get<7>(tuple).y);
+        double res = 0.5 *(a1 + a2 + a3 + a4 + a5 + a6 + a7 + a8);
+        std::cout << "\n";
+        return abs(res);
     }
     return 0;
 }
 
 template<class T>
 std::enable_if_t<is_figurelike_tuple_v<T>, double> square(const T& object) {
-    if constexpr (std::tuple_size_v<T> < 4 || std::tuple_size_v<T> > 5) {
-        return 0;
+    if constexpr (std::tuple_size_v<T> == 5 || std::tuple_size_v<T> == 6 || std::tuple_size_v<T> == 8) {
+        return compute_square(object);
     }
     else {
-        return compute_square(object);
+        return;
     }
 }
 
-//-----------------
+
 template<class T, class = void>
 struct has_method_center : std::false_type {};
 
@@ -98,15 +110,17 @@ template<size_t Id, class T>
 std::tuple_element_t<0,T> compute_center(const T& tuple) {
     using vertex_type = std::tuple_element_t<0, T>;
     vertex_type res{};
-    if constexpr (std::tuple_size_v<T> == 4) {
-        //Vertex<T> res = Vertex<T>();
-        res += std::get<0>(tuple) + std::get<1>(tuple) + std::get<2>(tuple) + std::get<3>(tuple);
-        return res / 4;
-    }
-    else if (std::tuple_size_v<T> == 5) {
-        //Vertex<T> res = Vertex<T>();
-        res = std::get<0>(tuple) + std::get<1>(tuple) + std::get<2>(tuple) + std::get<3>(tuple) + std::get<4>(tuple);
+    if constexpr (std::tuple_size_v<T> == 5) {
+        res += std::get<0>(tuple) + std::get<1>(tuple) + std::get<2>(tuple) + std::get<3>(tuple) + std::get<4>(tuple);
         return res / 5;
+    }
+    else if constexpr (std::tuple_size_v<T> == 6) {
+        res = std::get<0>(tuple) + std::get<1>(tuple) + std::get<2>(tuple) + std::get<3>(tuple) + std::get<4>(tuple) + std::get<5>(tuple);
+        return res / 6;
+    }
+    else if constexpr (std::tuple_size_v<T> == 8) {
+        res = std::get<0>(tuple) + std::get<1>(tuple) + std::get<2>(tuple) + std::get<3>(tuple) + std::get<4>(tuple) + std::get<5>(tuple) + std::get<6>(tuple) + std::get<7>(tuple);
+        return res / 8;
     }
     else
         return res;
@@ -117,16 +131,21 @@ std::enable_if_t<is_figurelike_tuple_v<T>, std::tuple_element_t<0,T>>
 center(const T& object) {
     using vertex_type = std::tuple_element_t<0, T>;
     vertex_type res{};
-    if constexpr (std::tuple_size_v<T> < 4 || std::tuple_size_v<T> > 5) {
-        return res;
+    if constexpr (std::tuple_size_v<T> == 5 || std::tuple_size_v<T> == 6 || std::tuple_size_v<T> == 8) {
+        if(std::tuple_size_v<T> == 5){
+            return compute_center<4>(object);
+        } else if (std::tuple_size_v<T> == 6){
+            return compute_center<5>(object);
+        } else if (std::tuple_size_v<T> == 8){
+            return compute_center<7>(object);
+        }
     }
     else {
-        return std::tuple_size_v<T> == 4 ? compute_center<3>(object) : compute_center<4>(object);
+        return res;
     }
 }
 
 
-//-----------------
 template<class T, class = void>
 struct has_method_print : std::false_type {};
 
@@ -149,16 +168,12 @@ void t_print(std::ostream& on, T& tuple) {
         return;
     }
     else {
-        if constexpr (std::tuple_size_v<T> == 4)
-            if(vector_product(std::get<0>(tuple) - std::get<3>(tuple), std::get<1>(tuple) - std::get<2>(tuple)) == 0) {
-                on << "Trapeze: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple) << ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ';
-            }
-            else if constexpr(std::tuple_size_v<T> == 4)
-                if(distance(std::get<0>(tuple), std::get<3>(tuple)) == distance(std::get<0>(tuple), std::get<1>(tuple)) && distance(std::get<0>(tuple), std::get<3>(tuple)) == distance(std::get<1>(tuple), std::get<2>(tuple)) && distance(std::get<0>(tuple), std::get<3>(tuple)) == distance(std::get<2>(tuple), std::get<3>(tuple))) {
-                    on << "Rhombus: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple) << ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ';
-                }
-                else if constexpr (std::tuple_size_v<T> == 5) {
-                    on << "Pentagon: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple)<< ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ' << std::get<4>(tuple);
+        if constexpr (std::tuple_size_v<T> == 5){
+                on << "Pentagon: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple)<< ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ' << std::get<4>(tuple);
+            } else if constexpr(std::tuple_size_v<T> == 6){
+                    on << "Hexagon: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple) << ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ' << std::get<4>(tuple) << ' ' << std::get<5>(tuple) << ' ';
+                } else if constexpr (std::tuple_size_v<T> == 8) {
+                    on << "Octagon: " << std::get<0>(tuple) << ' ' << std::get<1>(tuple)<< ' ' << std::get<2>(tuple) << ' ' << std::get<3>(tuple) << ' ' << std::get<4>(tuple) << std::get<5>(tuple) << ' ' << std::get<6>(tuple) << ' ' << std::get<7>(tuple) << ' ';
                 }
         return;
     }
@@ -167,16 +182,21 @@ void t_print(std::ostream& on, T& tuple) {
 template<class T>
 std::enable_if_t<is_figurelike_tuple_v<T>, void>
 print(std::ostream& in, T& object) {
-    if constexpr (std::tuple_size_v<T> < 4 || std::tuple_size_v<T> > 5) {
-        return;
+    if constexpr (std::tuple_size_v<T> == 5 || std::tuple_size_v<T> == 6 || std::tuple_size_v<T> == 8) {
+        if(std::tuple_size_v<T> == 5){
+            return t_print<4>(std::cout, object) ;
+        } else if (std::tuple_size_v<T> == 6){
+            return t_print<5>(std::cout, object) ;
+        } else if (std::tuple_size_v<T> == 8){
+            return t_print<7>(std::cout, object) ;
+        }
     }
     else {
-        std::tuple_size_v<T> == 4 ? t_print<3>(std::cout, object) : t_print<4>(std::cout, object);
+        return;
     }
 }
 
 
-//-----------------
 template<class T, class = void>
 struct has_method_read : std::false_type {};
 
@@ -199,11 +219,14 @@ void t_read(std::istream& in, T& tuple) {
         return;
     }
     else {
-        if constexpr (std::tuple_size_v<T> == 4) {
-            in >> std::get<0>(tuple) >> std::get<1>(tuple) >> std::get<2>(tuple) >> std::get<3>(tuple);
-        }
-        else if constexpr (std::tuple_size_v<T> == 5) {
+        if constexpr (std::tuple_size_v<T> == 5) {
             in >> std::get<0>(tuple) >> std::get<1>(tuple) >> std::get<2>(tuple) >> std::get<3>(tuple) >> std::get<4>(tuple);
+        }
+        else if constexpr (std::tuple_size_v<T> == 6) {
+            in >> std::get<0>(tuple) >> std::get<1>(tuple) >> std::get<2>(tuple) >> std::get<3>(tuple) >> std::get<4>(tuple) >> std::get<5>(tuple);
+        }
+        else if constexpr (std::tuple_size_v<T> == 8) {
+            in >> std::get<0>(tuple) >> std::get<1>(tuple) >> std::get<2>(tuple) >> std::get<3>(tuple) >> std::get<4>(tuple) >> std::get<5>(tuple) >> std::get<6>(tuple) >> std::get<7>(tuple);
         }
         return;
     }
@@ -212,11 +235,16 @@ void t_read(std::istream& in, T& tuple) {
 template<class T>
 std::enable_if_t<is_figurelike_tuple_v<T>, void>
 read(std::istream& in, T& object) {
-    if constexpr ((std::tuple_size_v<T> < 4) || (std::tuple_size_v<T> > 5)) {
-        return;
+    if constexpr (std::tuple_size_v<T> == 5 || std::tuple_size_v<T> == 6 || std::tuple_size_v<T> == 8) {
+        if(std::tuple_size_v<T> == 5){
+            t_read<4>(std::cin, object);;
+        } else if (std::tuple_size_v<T> == 6){
+            t_read<5>(std::cin, object);;
+        } else if (std::tuple_size_v<T> == 8){
+            t_read<7>(std::cin, object);
+        }
     }
-    else if constexpr ((std::tuple_size_v<T>) == 4)
-        t_read<3>(std::cin, object);
-    else if constexpr ((std::tuple_size_v<T>) == 5)
-        t_read<4>(std::cin, object);
+    else {
+        return;
+    };
 }
